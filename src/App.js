@@ -24,8 +24,21 @@ const App = () => {
     const obj = { Time: key, Price: value["4. close"] };
     array.push(obj);
   });
-  const y_min = 116;
-  const y_max = 120;
+
+  const y_min =
+    Math.min.apply(
+      Math,
+      array.map(function (o) {
+        return o.Price;
+      })
+    ) - 1;
+  const y_max =
+    Math.max.apply(
+      Math,
+      array.map(function (o) {
+        return o.Price;
+      })
+    ) + 1;
 
   function dailyDataFetch() {
     const base_url = `https://www.alphavantage.co/query?`;
