@@ -11,14 +11,10 @@ import {
 
 const App = () => {
   const [data, setData] = useState([]);
-  const [plotData, setPlotData] = useState([]);
+  const [ticker, setTicker] = useState("IBM");
 
   useEffect(() => {
-    fetch(
-      "https://www.alphavantage.co/query?function=TIME_SERIES_INTRADAY&symbol=IBM&interval=5min&apikey=demo"
-    )
-      .then((response) => response.json())
-      .then((data) => setData(data["Time Series (5min)"]));
+    dailyDataFetch();
   }, []);
 
   let array = [];
@@ -28,8 +24,29 @@ const App = () => {
     const obj = { Time: key, Price: value["4. close"] };
     array.push(obj);
   });
+  const y_min = 116;
+  const y_max = 120;
 
-  console.log(array);
+  function dailyDataFetch() {
+    const base_url = `https://www.alphavantage.co/query?`;
+    const funct = `TIME_SERIES_INTRADAY`;
+    const symbol = ticker;
+    const interval = `5min`;
+    const apikey = `RISJR704KEB8ZCB6`;
+    const final_url = base_url.concat(
+      "function=",
+      funct,
+      "&symbol=",
+      symbol,
+      "&interval=",
+      interval,
+      "&apikey=",
+      apikey
+    );
+    fetch(final_url)
+      .then((response) => response.json())
+      .then((data) => setData(data["Time Series (5min)"]));
+  }
   const renderLineChart = (
     <LineChart width={800} height={600} data={array}>
       <Line type="monotone" dataKey="Price" stroke="#8884d8" />
@@ -37,11 +54,21 @@ const App = () => {
       <Tooltip />
       <Legend />
       <XAxis dataKey="name" />
-      <YAxis domain={[116, 120]} />
+      <YAxis domain={[y_min, y_max]} />
     </LineChart>
   );
 
-  return <div>{renderLineChart}</div>;
+  function handleChange(event) {
+    setTicker(event.target.value);
+  }
+
+  return (
+    <div>
+      <input value={ticker} onChange={handleChange}></input>
+      <button onClick={dailyDataFetch}>Data</button>
+      {renderLineChart}
+    </div>
+  );
 };
 
 export default App;
