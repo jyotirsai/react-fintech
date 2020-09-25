@@ -1,5 +1,13 @@
 import React, { useState, useEffect } from "react";
-import { LineChart, Line, CartesianGrid, XAxis, YAxis } from "recharts";
+import {
+  LineChart,
+  Line,
+  CartesianGrid,
+  XAxis,
+  YAxis,
+  Tooltip,
+  Legend,
+} from "recharts";
 
 const App = () => {
   const [data, setData] = useState([]);
@@ -26,6 +34,8 @@ const App = () => {
     <LineChart width={800} height={600} data={array}>
       <Line type="monotone" dataKey="Price" stroke="#8884d8" />
       <CartesianGrid strokeDasharray="3 3" />
+      <Tooltip />
+      <Legend />
       <XAxis dataKey="name" />
       <YAxis domain={[116, 120]} />
     </LineChart>
