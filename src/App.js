@@ -1,26 +1,21 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, { useState, useEffect } from "react";
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
-}
+const App = () => {
+  const [data, setData] = useState([]);
+
+  useEffect(() => {
+    fetch(
+      "https://www.alphavantage.co/query?function=TIME_SERIES_INTRADAY&symbol=IBM&interval=5min&apikey=demo"
+    )
+      .then((response) => response.json())
+      .then((data) => setData(data["Time Series (5min)"]));
+  }, []);
+
+  Object.keys(data).forEach((key) => {
+    console.log(key, data[key]["4. close"]);
+  });
+
+  return <div>hi</div>;
+};
 
 export default App;
