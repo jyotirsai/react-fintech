@@ -8,13 +8,34 @@ import {
   Tooltip,
   Legend,
 } from "recharts";
+import {
+  Accordion,
+  AccordionSummary,
+  AccordionDetails,
+  Typography,
+  Menu,
+  MenuItem,
+  IconButton,
+  Grid,
+} from "@material-ui/core";
+import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
+import ArrowDropDownIcon from "@material-ui/icons/ArrowDropDown";
+import { makeStyles } from "@material-ui/styles";
+
+const useStyles = makeStyles({
+  textSpace: {
+    paddingLeft: "7.5px",
+  },
+});
 
 const App = () => {
+  const classes = useStyles();
   const [data, setData] = useState([]);
   const [ticker, setTicker] = useState("IBM");
 
   useEffect(() => {
     dailyDataFetch();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   let array = [];
@@ -61,7 +82,7 @@ const App = () => {
       .then((data) => setData(data["Time Series (5min)"]));
   }
   const renderLineChart = (
-    <LineChart width={800} height={600} data={array}>
+    <LineChart width={600} height={400} data={array}>
       <Line type="monotone" dataKey="Price" stroke="#8884d8" />
       <CartesianGrid strokeDasharray="3 3" />
       <Tooltip />
@@ -79,6 +100,31 @@ const App = () => {
     <div>
       <input value={ticker} onChange={handleChange}></input>
       <button onClick={dailyDataFetch}>Data</button>
+      <Accordion>
+        <AccordionSummary expandIcon={<ExpandMoreIcon />}>
+          <Typography variant="h5">Options</Typography>
+        </AccordionSummary>
+        <AccordionDetails>
+          <Grid
+            container
+            spacing={4}
+            direction="row"
+            justify="center"
+            alignItems="center"
+          >
+            <Grid container item direction="row" alignItems="center">
+              <Typography variant="subtitle2">Time Series: </Typography>
+              <Typography variant="subtitle2" className={classes.textSpace}>
+                {" "}
+                Intraday
+              </Typography>
+              <IconButton>
+                <ArrowDropDownIcon />
+              </IconButton>
+            </Grid>
+          </Grid>
+        </AccordionDetails>
+      </Accordion>
       {renderLineChart}
     </div>
   );
