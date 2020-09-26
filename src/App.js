@@ -26,12 +26,17 @@ const useStyles = makeStyles({
   textSpace: {
     paddingLeft: "7.5px",
   },
+  iconPadding: {
+    padding: 2,
+  },
 });
 
 const App = () => {
   const classes = useStyles();
   const [data, setData] = useState([]);
   const [ticker, setTicker] = useState("IBM");
+  const [anchorEl, setAnchorEl] = useState(null);
+  const [timeSeries, setTimeSeries] = useState("Intraday");
 
   useEffect(() => {
     dailyDataFetch();
@@ -96,6 +101,18 @@ const App = () => {
     setTicker(event.target.value);
   }
 
+  function menuClick(event) {
+    setAnchorEl(event.currentTarget);
+  }
+
+  function menuClose(event) {
+    let name = event.target.getAttribute("name");
+    setTimeSeries(name);
+    setAnchorEl(null);
+  }
+
+  const timeSeriesMenu = ["Intraday", "Daily", "Weekly", "Monthly"];
+
   return (
     <div>
       <input value={ticker} onChange={handleChange}></input>
@@ -116,11 +133,24 @@ const App = () => {
               <Typography variant="subtitle2">Time Series: </Typography>
               <Typography variant="subtitle2" className={classes.textSpace}>
                 {" "}
-                Intraday
+                {timeSeries}
               </Typography>
-              <IconButton>
+              <IconButton onClick={menuClick} className={classes.iconPadding}>
                 <ArrowDropDownIcon />
               </IconButton>
+              <Menu
+                anchorEl={anchorEl}
+                open={Boolean(anchorEl)}
+                keepMounted
+                anchorOrigin={{ horizontal: "center", vertical: "bottom" }}
+                getContentAnchorEl={null}
+              >
+                {timeSeriesMenu.map((item, key) => (
+                  <MenuItem name={item} onClick={menuClose} key={key}>
+                    {item}
+                  </MenuItem>
+                ))}
+              </Menu>
             </Grid>
           </Grid>
         </AccordionDetails>
