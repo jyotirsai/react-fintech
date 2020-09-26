@@ -39,26 +39,26 @@ const App = () => {
   const [timeSeries, setTimeSeries] = useState("Intraday");
 
   useEffect(() => {
-    dailyDataFetch();
+    intraDataFetch();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   let array = [];
 
   Object.entries(data).forEach((entry) => {
-    const [key, value] = entry;
-    const obj = { Time: key, Price: value["4. close"] };
+    let [key, value] = entry;
+    let obj = { Time: key, Price: value["4. close"] };
     array.push(obj);
   });
 
-  const y_min =
+  let y_min =
     Math.min.apply(
       Math,
       array.map(function (o) {
         return o.Price;
       })
     ) - 1;
-  const y_max =
+  let y_max =
     Math.max.apply(
       Math,
       array.map(function (o) {
@@ -66,14 +66,14 @@ const App = () => {
       })
     ) + 1;
 
-  function dailyDataFetch() {
+  function intraDataFetch() {
     const base_url = `https://www.alphavantage.co/query?`;
-    const funct = `TIME_SERIES_INTRADAY`;
+    const funct = `intraday`;
     const symbol = ticker;
     const interval = `5min`;
     const apikey = `RISJR704KEB8ZCB6`;
     const final_url = base_url.concat(
-      "function=",
+      "function=TIME_SERIES_",
       funct,
       "&symbol=",
       symbol,
@@ -86,8 +86,63 @@ const App = () => {
       .then((response) => response.json())
       .then((data) => setData(data["Time Series (5min)"]));
   }
+
+  function dailyDataFetch() {
+    const base_url = `https://www.alphavantage.co/query?`;
+    const funct = `daily`;
+    const symbol = ticker;
+    const apikey = `RISJR704KEB8ZCB6`;
+    const final_url = base_url.concat(
+      "function=TIME_SERIES_",
+      funct,
+      "&symbol=",
+      symbol,
+      "&apikey=",
+      apikey
+    );
+    fetch(final_url)
+      .then((response) => response.json())
+      .then((data) => setData(data["Time Series (Daily)"]));
+  }
+
+  function weeklyDataFetch() {
+    const base_url = `https://www.alphavantage.co/query?`;
+    const funct = `weekly`;
+    const symbol = ticker;
+    const apikey = `RISJR704KEB8ZCB6`;
+    const final_url = base_url.concat(
+      "function=TIME_SERIES_",
+      funct,
+      "&symbol=",
+      symbol,
+      "&apikey=",
+      apikey
+    );
+    fetch(final_url)
+      .then((response) => response.json())
+      .then((data) => setData(data["Weekly Time Series"]));
+  }
+
+  function monthlyDataFetch() {
+    const base_url = `https://www.alphavantage.co/query?`;
+    const funct = `monthly`;
+    const symbol = ticker;
+    const apikey = `RISJR704KEB8ZCB6`;
+    const final_url = base_url.concat(
+      "function=TIME_SERIES_",
+      funct,
+      "&symbol=",
+      symbol,
+      "&apikey=",
+      apikey
+    );
+    fetch(final_url)
+      .then((response) => response.json())
+      .then((data) => setData(data["Monthly Time Series"]));
+  }
+
   const renderLineChart = (
-    <LineChart width={600} height={400} data={array}>
+    <LineChart width={900} height={400} data={array}>
       <Line type="monotone" dataKey="Price" stroke="#8884d8" />
       <CartesianGrid strokeDasharray="3 3" />
       <Tooltip />
@@ -108,6 +163,15 @@ const App = () => {
   function menuClose(event) {
     let name = event.target.getAttribute("name");
     setTimeSeries(name);
+    if (name === "Intraday") {
+      intraDataFetch();
+    } else if (name === "Daily") {
+      dailyDataFetch();
+    } else if (name === "Weekly") {
+      weeklyDataFetch();
+    } else if (name === "Monthly") {
+      monthlyDataFetch();
+    }
     setAnchorEl(null);
   }
 
@@ -116,7 +180,7 @@ const App = () => {
   return (
     <div>
       <input value={ticker} onChange={handleChange}></input>
-      <button onClick={dailyDataFetch}>Data</button>
+      <button onClick={intraDataFetch}>Data</button>
       <Accordion>
         <AccordionSummary expandIcon={<ExpandMoreIcon />}>
           <Typography variant="h5">Options</Typography>
