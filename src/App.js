@@ -17,6 +17,7 @@ import {
   MenuItem,
   IconButton,
   Grid,
+  TextField,
 } from "@material-ui/core";
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 import ArrowDropDownIcon from "@material-ui/icons/ArrowDropDown";
@@ -40,6 +41,7 @@ const App = () => {
 
   useEffect(() => {
     intraDataFetch();
+
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -156,12 +158,26 @@ const App = () => {
     setTicker(event.target.value);
   }
 
+  function tickerChange(event) {
+    if (event.key === "Enter") {
+      if (timeSeries === "Intraday") {
+        intraDataFetch();
+      } else if (timeSeries === "Daily") {
+        dailyDataFetch();
+      } else if (timeSeries === "Weekly") {
+        weeklyDataFetch();
+      } else if (timeSeries === "Monthly") {
+        monthlyDataFetch();
+      }
+    }
+  }
+
   function menuClick(event) {
     setAnchorEl(event.currentTarget);
   }
 
   function menuClose(event) {
-    let name = event.target.getAttribute("name");
+    const name = event.target.getAttribute("name");
     setTimeSeries(name);
     if (name === "Intraday") {
       intraDataFetch();
@@ -179,8 +195,11 @@ const App = () => {
 
   return (
     <div>
-      <input value={ticker} onChange={handleChange}></input>
-      <button onClick={intraDataFetch}>Data</button>
+      <TextField
+        value={ticker}
+        onChange={handleChange}
+        onKeyPress={tickerChange}
+      ></TextField>
       <Accordion>
         <AccordionSummary expandIcon={<ExpandMoreIcon />}>
           <Typography variant="h5">Options</Typography>
