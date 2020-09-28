@@ -53,6 +53,8 @@ const App = () => {
     array.push(obj);
   });
 
+  array.reverse();
+
   let y_min =
     Math.min.apply(
       Math,
@@ -144,12 +146,17 @@ const App = () => {
   }
 
   const renderLineChart = (
-    <LineChart width={900} height={400} data={array}>
+    <LineChart
+      width={900}
+      height={400}
+      data={array}
+      margin={{ top: 10, right: 5, left: 5, bottom: 5 }}
+    >
       <Line type="monotone" dataKey="Price" stroke="#8884d8" />
-      <CartesianGrid strokeDasharray="3 3" />
+
       <Tooltip />
       <Legend />
-      <XAxis dataKey="name" />
+      <XAxis dataKey="Time" />
       <YAxis domain={[y_min, y_max]} />
     </LineChart>
   );
