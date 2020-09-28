@@ -1,47 +1,13 @@
 import React, { useState, useEffect } from "react";
-import {
-  LineChart,
-  Line,
-  CartesianGrid,
-  XAxis,
-  YAxis,
-  Tooltip,
-  Legend,
-} from "recharts";
-import {
-  Accordion,
-  AccordionSummary,
-  AccordionDetails,
-  Typography,
-  Menu,
-  MenuItem,
-  IconButton,
-  Grid,
-  TextField,
-} from "@material-ui/core";
-import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
-import ArrowDropDownIcon from "@material-ui/icons/ArrowDropDown";
-import { makeStyles } from "@material-ui/styles";
-
-const useStyles = makeStyles({
-  textSpace: {
-    paddingLeft: "7.5px",
-  },
-  iconPadding: {
-    padding: 2,
-  },
-});
+import { LineChart, Line, XAxis, YAxis, Tooltip, Legend } from "recharts";
+import Options from "./components/Options";
 
 const App = () => {
-  const classes = useStyles();
   const [data, setData] = useState([]);
   const [ticker, setTicker] = useState("IBM");
-  const [anchorEl, setAnchorEl] = useState(null);
-  const [timeSeries, setTimeSeries] = useState("Intraday");
 
   useEffect(() => {
     intraDataFetch();
-
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -153,7 +119,6 @@ const App = () => {
       margin={{ top: 10, right: 5, left: 5, bottom: 5 }}
     >
       <Line type="monotone" dataKey="Price" stroke="#8884d8" />
-
       <Tooltip />
       <Legend />
       <XAxis dataKey="Time" />
@@ -161,90 +126,16 @@ const App = () => {
     </LineChart>
   );
 
-  function handleChange(event) {
-    setTicker(event.target.value);
-  }
-
-  function tickerChange(event) {
-    if (event.key === "Enter") {
-      if (timeSeries === "Intraday") {
-        intraDataFetch();
-      } else if (timeSeries === "Daily") {
-        dailyDataFetch();
-      } else if (timeSeries === "Weekly") {
-        weeklyDataFetch();
-      } else if (timeSeries === "Monthly") {
-        monthlyDataFetch();
-      }
-    }
-  }
-
-  function menuClick(event) {
-    setAnchorEl(event.currentTarget);
-  }
-
-  function menuClose(event) {
-    const name = event.target.getAttribute("name");
-    setTimeSeries(name);
-    if (name === "Intraday") {
-      intraDataFetch();
-    } else if (name === "Daily") {
-      dailyDataFetch();
-    } else if (name === "Weekly") {
-      weeklyDataFetch();
-    } else if (name === "Monthly") {
-      monthlyDataFetch();
-    }
-    setAnchorEl(null);
-  }
-
-  const timeSeriesMenu = ["Intraday", "Daily", "Weekly", "Monthly"];
-
   return (
     <div>
-      <TextField
-        value={ticker}
-        onChange={handleChange}
-        onKeyPress={tickerChange}
-      ></TextField>
-      <Accordion>
-        <AccordionSummary expandIcon={<ExpandMoreIcon />}>
-          <Typography variant="h5">Options</Typography>
-        </AccordionSummary>
-        <AccordionDetails>
-          <Grid
-            container
-            spacing={4}
-            direction="row"
-            justify="center"
-            alignItems="center"
-          >
-            <Grid container item direction="row" alignItems="center">
-              <Typography variant="subtitle2">Time Series: </Typography>
-              <Typography variant="subtitle2" className={classes.textSpace}>
-                {" "}
-                {timeSeries}
-              </Typography>
-              <IconButton onClick={menuClick} className={classes.iconPadding}>
-                <ArrowDropDownIcon />
-              </IconButton>
-              <Menu
-                anchorEl={anchorEl}
-                open={Boolean(anchorEl)}
-                keepMounted
-                anchorOrigin={{ horizontal: "center", vertical: "bottom" }}
-                getContentAnchorEl={null}
-              >
-                {timeSeriesMenu.map((item, key) => (
-                  <MenuItem name={item} onClick={menuClose} key={key}>
-                    {item}
-                  </MenuItem>
-                ))}
-              </Menu>
-            </Grid>
-          </Grid>
-        </AccordionDetails>
-      </Accordion>
+      <Options
+        ticker={ticker}
+        setTicker={setTicker}
+        intraDataFetch={intraDataFetch}
+        dailyDataFetch={dailyDataFetch}
+        weeklyDataFetch={weeklyDataFetch}
+        monthlyDataFetch={monthlyDataFetch}
+      />
       {renderLineChart}
     </div>
   );
