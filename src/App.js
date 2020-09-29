@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { LineChart, Line, XAxis, YAxis, Tooltip, Legend } from "recharts";
+import Graph from "./components/Graph";
 import Options from "./components/Options";
 
 const App = () => {
@@ -111,21 +111,6 @@ const App = () => {
       .then((data) => setData(data["Monthly Time Series"]));
   }
 
-  const renderLineChart = (
-    <LineChart
-      width={900}
-      height={400}
-      data={array}
-      margin={{ top: 10, right: 5, left: 5, bottom: 5 }}
-    >
-      <Line type="monotone" dataKey="Price" stroke="#8884d8" />
-      <Tooltip />
-      <Legend />
-      <XAxis dataKey="Time" />
-      <YAxis domain={[y_min, y_max]} />
-    </LineChart>
-  );
-
   return (
     <div>
       <Options
@@ -136,7 +121,7 @@ const App = () => {
         weeklyDataFetch={weeklyDataFetch}
         monthlyDataFetch={monthlyDataFetch}
       />
-      {renderLineChart}
+      <Graph y_min={y_min} y_max={y_max} array={array} />
     </div>
   );
 };
