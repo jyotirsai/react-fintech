@@ -37,78 +37,89 @@ const App = () => {
     ) + 1;
 
   function intraDataFetch() {
-    const base_url = `https://www.alphavantage.co/query?`;
-    const funct = `intraday`;
-    const symbol = ticker;
-    const interval = `5min`;
-    const apikey = `RISJR704KEB8ZCB6`;
-    const final_url = base_url.concat(
-      "function=TIME_SERIES_",
-      funct,
-      "&symbol=",
-      symbol,
-      "&interval=",
-      interval,
-      "&apikey=",
-      apikey
-    );
-    fetch(final_url)
-      .then((response) => response.json())
-      .then((data) => setData(data["Time Series (5min)"]));
+    dataFetch("intraday");
   }
 
   function dailyDataFetch() {
-    const base_url = `https://www.alphavantage.co/query?`;
-    const funct = `daily`;
-    const symbol = ticker;
-    const apikey = `RISJR704KEB8ZCB6`;
-    const final_url = base_url.concat(
-      "function=TIME_SERIES_",
-      funct,
-      "&symbol=",
-      symbol,
-      "&apikey=",
-      apikey
-    );
-    fetch(final_url)
-      .then((response) => response.json())
-      .then((data) => setData(data["Time Series (Daily)"]));
+    dataFetch("daily");
   }
 
   function weeklyDataFetch() {
-    const base_url = `https://www.alphavantage.co/query?`;
-    const funct = `weekly`;
-    const symbol = ticker;
-    const apikey = `RISJR704KEB8ZCB6`;
-    const final_url = base_url.concat(
-      "function=TIME_SERIES_",
-      funct,
-      "&symbol=",
-      symbol,
-      "&apikey=",
-      apikey
-    );
-    fetch(final_url)
-      .then((response) => response.json())
-      .then((data) => setData(data["Weekly Time Series"]));
+    dataFetch("weekly");
   }
 
   function monthlyDataFetch() {
+    dataFetch("monthly");
+  }
+
+  function dataFetch(time) {
     const base_url = `https://www.alphavantage.co/query?`;
-    const funct = `monthly`;
     const symbol = ticker;
     const apikey = `RISJR704KEB8ZCB6`;
-    const final_url = base_url.concat(
-      "function=TIME_SERIES_",
-      funct,
-      "&symbol=",
-      symbol,
-      "&apikey=",
-      apikey
-    );
-    fetch(final_url)
-      .then((response) => response.json())
-      .then((data) => setData(data["Monthly Time Series"]));
+    let funct = ``;
+    switch (time) {
+      case "intraday":
+        funct = `intraday`;
+        break;
+      case "daily":
+        funct = `daily`;
+        break;
+      case "weekly":
+        funct = `weekly`;
+        break;
+      case "monthly":
+        funct = `monthly`;
+        break;
+    }
+    if (funct === "intraday") {
+      const final_url = base_url.concat(
+        "function=TIME_SERIES_",
+        funct,
+        "&symbol=",
+        symbol,
+        "&interval=5min&apikey=",
+        apikey
+      );
+      fetch(final_url)
+        .then((response) => response.json())
+        .then((data) => setData(data["Time Series (5min)"]));
+    } else if (funct === `daily`) {
+      const final_url = base_url.concat(
+        "function=TIME_SERIES_",
+        funct,
+        "&symbol=",
+        symbol,
+        "&apikey=",
+        apikey
+      );
+      fetch(final_url)
+        .then((response) => response.json())
+        .then((data) => setData(data["Time Series (Daily)"]));
+    } else if (funct === `weekly`) {
+      const final_url = base_url.concat(
+        "function=TIME_SERIES_",
+        funct,
+        "&symbol=",
+        symbol,
+        "&apikey=",
+        apikey
+      );
+      fetch(final_url)
+        .then((response) => response.json())
+        .then((data) => setData(data["Weekly Time Series"]));
+    } else if (funct === `monthly`) {
+      const final_url = base_url.concat(
+        "function=TIME_SERIES_",
+        funct,
+        "&symbol=",
+        symbol,
+        "&apikey=",
+        apikey
+      );
+      fetch(final_url)
+        .then((response) => response.json())
+        .then((data) => setData(data["Monthly Time Series"]));
+    }
   }
 
   return (
