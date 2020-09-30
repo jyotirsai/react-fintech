@@ -7,50 +7,9 @@ const App = () => {
   const [ticker, setTicker] = useState("IBM");
 
   useEffect(() => {
-    intraDataFetch();
+    dataFetch("intraday");
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
-
-  let array = [];
-
-  Object.entries(data).forEach((entry) => {
-    let [key, value] = entry;
-    let obj = { Time: key, Price: value["4. close"] };
-    array.push(obj);
-  });
-
-  array.reverse();
-
-  let y_min =
-    Math.min.apply(
-      Math,
-      array.map(function (o) {
-        return o.Price;
-      })
-    ) - 1;
-  let y_max =
-    Math.max.apply(
-      Math,
-      array.map(function (o) {
-        return o.Price;
-      })
-    ) + 1;
-
-  function intraDataFetch() {
-    dataFetch("intraday");
-  }
-
-  function dailyDataFetch() {
-    dataFetch("daily");
-  }
-
-  function weeklyDataFetch() {
-    dataFetch("weekly");
-  }
-
-  function monthlyDataFetch() {
-    dataFetch("monthly");
-  }
 
   function dataFetch(time) {
     const base_url = `https://www.alphavantage.co/query?`;
@@ -69,6 +28,8 @@ const App = () => {
         break;
       case "monthly":
         funct = `monthly`;
+        break;
+      default:
         break;
     }
     if (funct === "intraday") {
@@ -121,19 +82,10 @@ const App = () => {
         .then((data) => setData(data["Monthly Time Series"]));
     }
   }
-
   return (
     <div>
-      <Options
-        ticker={ticker}
-        setTicker={setTicker}
-        intraDataFetch={intraDataFetch}
-        dailyDataFetch={dailyDataFetch}
-        weeklyDataFetch={weeklyDataFetch}
-        monthlyDataFetch={monthlyDataFetch}
-        dataFetch={dataFetch}
-      />
-      <Graph y_min={y_min} y_max={y_max} array={array} />
+      <Options ticker={ticker} setTicker={setTicker} dataFetch={dataFetch} />
+      <Graph data={data} />
     </div>
   );
 };
