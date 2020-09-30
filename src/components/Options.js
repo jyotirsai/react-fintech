@@ -26,7 +26,6 @@ const useStyles = makeStyles({
 const Options = (props) => {
   const classes = useStyles();
   const [anchorEl, setAnchorEl] = useState(null);
-
   const [timeSeries, setTimeSeries] = useState("Intraday");
 
   const timeSeriesMenu = ["Intraday", "Daily", "Weekly", "Monthly"];
@@ -40,13 +39,13 @@ const Options = (props) => {
     const name = event.target.getAttribute("name");
     setTimeSeries(name);
     if (name === "Intraday") {
-      props.intraDataFetch();
+      props.dataFetch("intraday");
     } else if (name === "Daily") {
-      props.dailyDataFetch();
+      props.dataFetch("daily");
     } else if (name === "Weekly") {
-      props.weeklyDataFetch();
+      props.dataFetch("weekly");
     } else if (name === "Monthly") {
-      props.monthlyDataFetch();
+      props.dataFetch("monthly");
     }
     setAnchorEl(null);
   }
@@ -58,13 +57,13 @@ const Options = (props) => {
   function tickerChange(event) {
     if (event.key === "Enter") {
       if (timeSeries === "Intraday") {
-        props.intraDataFetch();
+        props.dataFetch("intraday");
       } else if (timeSeries === "Daily") {
-        props.dailyDataFetch();
+        props.dataFetch("daily");
       } else if (timeSeries === "Weekly") {
-        props.weeklyDataFetch();
+        props.dataFetch("weekly");
       } else if (timeSeries === "Monthly") {
-        props.monthlyDataFetch();
+        props.dataFetch("monthly");
       }
     }
   }

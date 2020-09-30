@@ -131,6 +131,7 @@ const App = () => {
         dailyDataFetch={dailyDataFetch}
         weeklyDataFetch={weeklyDataFetch}
         monthlyDataFetch={monthlyDataFetch}
+        dataFetch={dataFetch}
       />
       <Graph y_min={y_min} y_max={y_max} array={array} />
     </div>
