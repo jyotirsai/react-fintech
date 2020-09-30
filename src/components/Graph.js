@@ -3,11 +3,16 @@ import { LineChart, Line, XAxis, YAxis, Tooltip, Legend } from "recharts";
 
 const Graph = (props) => {
   let array = [];
-  Object.entries(props.data).forEach((entry) => {
-    let [key, value] = entry;
-    let obj = { Time: key, Price: value["4. close"] };
-    array.push(obj);
-  });
+
+  try {
+    Object.entries(props.data).forEach((entry) => {
+      let [key, value] = entry;
+      let obj = { Time: key, Price: value["4. close"] };
+      array.push(obj);
+    });
+  } catch (err) {
+    console.log(err);
+  }
 
   array.reverse();
 
