@@ -16,11 +16,11 @@ const App = () => {
     const base_url = `https://www.alphavantage.co/query?`;
     const symbol = ticker;
     const apikey = `RISJR704KEB8ZCB6`;
-    const funct = `daily`;
+    const funct = `DAILY`;
     const final_url = base_url.concat(
       "function=TIME_SERIES_",
       funct,
-      "&symbol=",
+      "_ADJUSTED&symbol=",
       symbol,
       "&apikey=",
       apikey

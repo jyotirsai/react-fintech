@@ -6,7 +6,7 @@ const Graph = (props) => {
 
   Object.entries(props.data).forEach((entry) => {
     let [key, value] = entry;
-    let obj = { Time: key, Price: value["4. close"] };
+    let obj = { Time: key, Price: value["5. adjusted close"] };
     array.push(obj);
   });
 
