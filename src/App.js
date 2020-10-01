@@ -26,10 +26,8 @@ const App = () => {
       apikey
     );
     axios.get(final_url).then((response) => {
-      setData(response.data);
       console.log(response.data);
-      console.log(response.status);
-      console.log(response.statusText);
+      setData(response.data["Time Series (Daily)"]);
     });
   }
   return (
