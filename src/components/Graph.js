@@ -4,7 +4,7 @@ import { LineChart, Line, XAxis, YAxis, Tooltip, Legend } from "recharts";
 const Graph = (props) => {
   let array = [];
 
-  try {
+  /*try {
     Object.entries(props.data).forEach((entry) => {
       let [key, value] = entry;
       let obj = { Time: key, Price: value["4. close"] };
@@ -12,7 +12,7 @@ const Graph = (props) => {
     });
   } catch (err) {
     console.log(err);
-  }
+  }*/
 
   array.reverse();
 
