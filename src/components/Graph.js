@@ -1,5 +1,15 @@
 import React from "react";
-import { LineChart, Line, XAxis, YAxis, Tooltip, Legend } from "recharts";
+import {
+  AreaChart,
+  Area,
+  defs,
+  linearGradient,
+  stop,
+  XAxis,
+  YAxis,
+  Tooltip,
+  Legend,
+} from "recharts";
 
 const Graph = (props) => {
   let array = [];
@@ -29,18 +39,30 @@ const Graph = (props) => {
 
   // chart properties
   const renderLineChart = (
-    <LineChart
+    <AreaChart
       width={900}
       height={400}
       data={array}
       margin={{ top: 10, right: 5, left: 5, bottom: 5 }}
     >
-      <Line type="monotone" dataKey="Price" stroke="#8884d8" />
+      <defs>
+        <linearGradient id="colorUv" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="5%" stopColor="#8884d8" stopOpacity={0.8} />
+          <stop offset="95%" stopColor="#8884d8" stopOpacity={0} />
+        </linearGradient>
+      </defs>
+      <Area
+        type="monotone"
+        dataKey="Price"
+        stroke="#8884d8"
+        fillOpacity={1}
+        fill="url(#colorUv)"
+      />
       <Tooltip />
       <Legend />
       <XAxis dataKey="Time" />
       <YAxis domain={[y_min, y_max]} />
-    </LineChart>
+    </AreaChart>
   );
   return <div>{renderLineChart}</div>;
 };

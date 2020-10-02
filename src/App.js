@@ -16,7 +16,7 @@ const App = () => {
     const base_url = `https://www.alphavantage.co/query?`;
     const symbol = ticker;
     const apikey = `RISJR704KEB8ZCB6`;
-    const funct = `DAILY`;
+    const funct = `Weekly`;
     const final_url = base_url.concat(
       "function=TIME_SERIES_",
       funct,
@@ -26,10 +26,10 @@ const App = () => {
       apikey
     );
     axios.get(final_url).then((response) => {
-      console.log(response.data);
-      setData(response.data["Time Series (Daily)"]);
+      setData(response.data["Weekly Adjusted Time Series"]);
     });
   }
+
   return (
     <div>
       <Options ticker={ticker} setTicker={setTicker} dataFetch={dataFetch} />
