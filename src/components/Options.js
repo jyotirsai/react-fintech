@@ -1,11 +1,5 @@
 import React, { useState } from "react";
-import {
-  Accordion,
-  AccordionSummary,
-  AccordionDetails,
-  Typography,
-  TextField,
-} from "@material-ui/core";
+import { Grid, Button, TextField } from "@material-ui/core";
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 import { makeStyles } from "@material-ui/styles";
 
@@ -20,6 +14,8 @@ const useStyles = makeStyles({
 
 const Options = (props) => {
   const classes = useStyles();
+
+  const optionTabs = ["1D", "6M", "1Y", "5Y", "MAX"];
 
   function handleChange(event) {
     props.setTicker(event.target.value);
@@ -38,12 +34,13 @@ const Options = (props) => {
         onKeyPress={tickerChange}
         onChange={handleChange}
       ></TextField>
-      <Accordion>
-        <AccordionSummary expandIcon={<ExpandMoreIcon />}>
-          <Typography variant="h5">Options</Typography>
-        </AccordionSummary>
-        <AccordionDetails></AccordionDetails>
-      </Accordion>
+      <Grid>
+        {optionTabs.map((option, key) => (
+          <Button variant="outlined" key={key}>
+            {option}
+          </Button>
+        ))}
+      </Grid>
     </div>
   );
 };
