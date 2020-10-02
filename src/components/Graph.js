@@ -2,9 +2,7 @@ import React from "react";
 import {
   AreaChart,
   Area,
-  defs,
   linearGradient,
-  stop,
   XAxis,
   YAxis,
   Tooltip,
@@ -16,11 +14,16 @@ const Graph = (props) => {
 
   Object.entries(props.data).forEach((entry) => {
     let [key, value] = entry;
-    let obj = { Time: key, Price: value["5. adjusted close"] };
+    let obj = { Time: key, Price: value["4. close"] };
     array.push(obj);
   });
 
   array.reverse();
+  console.log(array);
+
+  if (array !== undefined) {
+    console.log(array.Time);
+  }
 
   let y_min =
     Math.min.apply(

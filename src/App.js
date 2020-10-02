@@ -8,7 +8,7 @@ const App = () => {
   const [ticker, setTicker] = useState("IBM");
 
   useEffect(() => {
-    dataFetch("daily");
+    dataFetch();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -16,17 +16,18 @@ const App = () => {
     const base_url = `https://www.alphavantage.co/query?`;
     const symbol = ticker;
     const apikey = `RISJR704KEB8ZCB6`;
-    const funct = `Weekly`;
+    const funct = `INTRADAY`;
     const final_url = base_url.concat(
       "function=TIME_SERIES_",
       funct,
-      "_ADJUSTED&symbol=",
+      "&symbol=",
       symbol,
+      "&interval=5min",
       "&apikey=",
       apikey
     );
     axios.get(final_url).then((response) => {
-      setData(response.data["Weekly Adjusted Time Series"]);
+      setData(response.data["Time Series (5min)"]);
     });
   }
 
