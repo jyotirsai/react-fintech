@@ -67,6 +67,7 @@ const Graph = (props) => {
       <YAxis domain={[y_min, y_max]} />
     </AreaChart>
   );
+
   return <div>{renderLineChart}</div>;
 };
 
